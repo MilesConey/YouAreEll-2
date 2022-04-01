@@ -24,34 +24,38 @@ public class ServerController<JsonString> {
         return svr;
     }
 
-    public JsonString idGet() {
-
+    public JSONArray idGet() {
         BufferedReader reader;
-        String line = " ";
-        StringBuffer response = new StringBuffer();
         JSONParser jsonParser = new JSONParser();
+        JSONArray ids = null;
         try {
-            URL url = new URL("http://zipcode.rocks:8085/ids");
+            URL url = new URL(rootURL+ "/ids");
             connection = (HttpURLConnection) url.openConnection();
+            //Request Method
             connection.setRequestMethod("GET");
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
 
             int status = connection.getResponseCode();
             System.out.println(status);
+
             if (status > 299) {
                 reader = new BufferedReader((new InputStreamReader(connection.getErrorStream())));
-                while ((line != null)) {
-                    response.append(line);
-                }
+                Object obj = jsonParser.parse(reader);
+                ids = (JSONArray) obj;
+                System.out.println(ids);
                 reader.close();
             } else {
                 reader = new BufferedReader((new InputStreamReader(connection.getInputStream())));
-               Object obj = jsonParser.parse(reader);
-                JSONArray ids = (JSONArray) obj;
+                Object obj = jsonParser.parse(reader);
+                ids = (JSONArray) obj;
                 System.out.println(ids);
                 reader.close();
+
             }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -59,7 +63,52 @@ public class ServerController<JsonString> {
         } finally {
             connection.disconnect();
         }
-        return(JsonString) response;
+
+        return ids;
+    }
+
+    public JSONArray messageGet() {
+        BufferedReader reader;
+        JSONParser jsonParser = new JSONParser();
+        JSONArray messages = null;
+        try {
+            URL url = new URL(rootURL+"/messages");
+            connection = (HttpURLConnection) url.openConnection();
+            //Request Method
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+
+            int status = connection.getResponseCode();
+            System.out.println(status);
+
+            if (status > 299) {
+                reader = new BufferedReader((new InputStreamReader(connection.getErrorStream())));
+                Object obj = jsonParser.parse(reader);
+                messages = (JSONArray) obj;
+                System.out.println(messages);
+                reader.close();
+            } else {
+                reader = new BufferedReader((new InputStreamReader(connection.getInputStream())));
+                Object obj = jsonParser.parse(reader);
+                messages = (JSONArray) obj;
+                System.out.println(messages);
+                reader.close();
+
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            connection.disconnect();
+        }
+
+        return messages;
+    }
 //
 //    public JsonString idPost(JsonTypeInfo.Id) {
 //        // url -> /ids/
@@ -74,5 +123,5 @@ public class ServerController<JsonString> {
 
 
     }
-}
+
 // ServerController.shared.doGet()

@@ -11,6 +11,10 @@ public class IdController {
     Id myId;
 
     public ArrayList<Id> getIds() {
+        ArrayList<Id> ids = new ArrayList<>();
+        ServerController serverController = ServerController.shared();
+        ids.addAll(serverController.idGet());
+        System.out.println(ids);
         return null;
     }
 
