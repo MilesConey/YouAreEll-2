@@ -1,6 +1,8 @@
 package youareell;
 
 import controllers.*;
+import org.json.simple.JSONArray;
+import java.io.IOException;
 
 public class YouAreEll {
 
@@ -10,11 +12,13 @@ public class YouAreEll {
         this.tt = t;
     }
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws IOException {
         // hmm: is this Dependency Injection?
-        ServerController serverController = ServerController.shared();
-        serverController.idGet();
-        serverController.messageGet();
+        MessageController messageController = MessageController.shared();
+        System.out.println(messageController.messagesSeen);
+//        ServerController serverController = ServerController.shared();
+//        serverController.idGet();
+//        serverController.messageGet();
 //        YouAreEll urlhandler = new YouAreEll(
 //            new TransactionController(
 //                new MessageController(), new IdController()
